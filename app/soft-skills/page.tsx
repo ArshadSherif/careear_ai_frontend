@@ -28,7 +28,7 @@ export default function SoftSkillsPage() {
     const [submitting, setSubmitting] = useState(false);
     const [offset, setOffset] = useState(0);
 
-    const { sessionId, isLoading: isSessionLoading } = useSession();
+    const { sessionId, isLoading: isSessionLoading, setSoftSkillsCompleted } = useSession();
     const router = useRouter();
 
     useEffect(() => {
@@ -93,6 +93,7 @@ export default function SoftSkillsPage() {
                 setAnswers([]); // Clear local answers for next batch
                 await fetchQuestions(nextOffset);
             } else {
+                setSoftSkillsCompleted();
                 router.push("/technical-domain");
             }
         } catch (error) {

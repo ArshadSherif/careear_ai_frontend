@@ -30,7 +30,12 @@ export function useSession() {
         sessionStorage.setItem("email", userEmail);
 
         // Set cookie for middleware
-        document.cookie = `session_id=${newSessionId}; path=/; max-age=86400; SameSite=Strict`;
+        document.cookie = `session_id=${newSessionId}; path=/; max-age=86400; SameSite=Lax`;
+
+        // Clear progress cookies
+        document.cookie = "resume_uploaded=; path=/; max-age=0; SameSite=Lax";
+        document.cookie = "jd_uploaded=; path=/; max-age=0; SameSite=Lax";
+        document.cookie = "soft_skills_completed=; path=/; max-age=0; SameSite=Lax";
 
         setSessionId(newSessionId);
         setEmail(userEmail);
@@ -42,12 +47,27 @@ export function useSession() {
         setResumeId(id);
     };
 
+    const setResumeUploaded = () => {
+        document.cookie = "resume_uploaded=true; path=/; max-age=86400; SameSite=Lax";
+    };
+
+    const setJdUploaded = () => {
+        document.cookie = "jd_uploaded=true; path=/; max-age=86400; SameSite=Lax";
+    };
+
+    const setSoftSkillsCompleted = () => {
+        document.cookie = "soft_skills_completed=true; path=/; max-age=86400; SameSite=Lax";
+    };
+
     return {
         sessionId,
         email,
         resumeId,
         startSession,
         saveResumeId,
-        isLoading: false // No longer needed as we initialize synchronously
+        setResumeUploaded,
+        setJdUploaded,
+        setSoftSkillsCompleted,
+        isLoading: false
     };
 }

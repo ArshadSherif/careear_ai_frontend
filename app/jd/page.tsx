@@ -11,20 +11,12 @@ export default function JDPage() {
     const [title, setTitle] = useState("");
     const [description, setDescription] = useState("");
     const [isSubmitting, setIsSubmitting] = useState(false);
-    const { sessionId, isLoading } = useSession();
+    const { sessionId, isLoading, setJdUploaded } = useSession();
     const router = useRouter();
 
     useEffect(() => {
-        if (!isLoading) {
-            if (!sessionId) {
-                router.push("/login");
-            } else {
-                // Check if resume is uploaded
-                const resumeId = sessionStorage.getItem("resume_id");
-                if (!resumeId) {
-                    router.push("/resume");
-                }
-            }
+        if (!isLoading && !sessionId) {
+            router.push("/login");
         }
     }, [sessionId, isLoading, router]);
 
@@ -49,6 +41,7 @@ export default function JDPage() {
                 text: description,
                 session_id: sessionId
             });
+            setJdUploaded();
             router.push("/soft-skills");
         } catch (error) {
             console.error("Failed to upload JD", error);
@@ -59,6 +52,7 @@ export default function JDPage() {
     };
 
     const handleSkip = () => {
+        setJdUploaded();
         router.push("/soft-skills");
     };
 

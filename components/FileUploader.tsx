@@ -13,7 +13,7 @@ export function FileUploader() {
     const [isUploading, setIsUploading] = useState(false);
     const [error, setError] = useState<string | null>(null);
     const fileInputRef = useRef<HTMLInputElement>(null);
-    const { sessionId, saveResumeId } = useSession();
+    const { sessionId, saveResumeId, setResumeUploaded } = useSession();
     const router = useRouter();
 
     const handleDragOver = (e: React.DragEvent) => {
@@ -72,6 +72,7 @@ export function FileUploader() {
 
             if (response.data && response.data.id) {
                 saveResumeId(response.data.id.toString());
+                setResumeUploaded();
                 router.push("/jd");
             } else {
                 setError("Upload failed. Please try again.");
